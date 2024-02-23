@@ -3,3 +3,5 @@
 -- Add any additional options here
 --
 -- vim.opt.winbar = "%=%m %f"
+--
+vim.api.nvim_set_hl(0, "WinSeparator", { fg = "red", bold = true })

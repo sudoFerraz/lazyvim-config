@@ -12,6 +12,10 @@ vim.keymap.set("i", "<C-l>", 'copilot#Accept("\\<CR>")', {
 })
 vim.g.copilot_no_tab_map = true
 
-vim.keymap.set("i", "<C-k>", "copilot#Next")
-vim.keymap.set("i", "<C-j>", "copilot#Previous")
-vim.keymap.set("i", "<C-h>", "copilot#Suggest")
+vim.keymap.set("i", "<C-k>", "<Plug>(copilot-next)")
+
+vim.keymap.set("i", "<C-j>", "<Plug>(copilot-previous)")
+
+vim.keymap.set("i", "<C-h>", "<Plug>(copilot-suggest)")
+
+vim.keymap.set("i", "<C-y>", "<Plug>(copilot-accept-word)")
