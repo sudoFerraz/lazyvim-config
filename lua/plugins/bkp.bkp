@@ -1,0 +1,480 @@
+vim.api.nvim_set_keymap("n", "-", "<Plug>(dirvish_up)", {})
+vim.api.nvim_set_keymap("n", "rn", "<Plug>JupyterExecuteAll", {})
+vim.api.nvim_set_keymap("n", "rm", "<Plug>JupyterExecute", {})
+
+local config = {
+
+  -- Set colorscheme
+  colorscheme = "default_theme",
+
+  -- set vim options here (vim.<first_key>.<second_key> =  value)
+  options = {
+    opt = {
+      relativenumber = true, -- sets vim.opt.relativenumber
+    },
+    g = {
+      mapleader = " ", -- sets vim.g.mapleader
+      autoformat_enabled = false, -- enable or disable auto formatting at start (lsp.formatting.format_on_save must be enabled)
+    },
+  },
+
+  -- Default theme configuration
+  -- default_theme = {
+  --   diagnostics_style = { italic = true },
+  --   -- Modify the color table
+  --   colors = {
+  --     fg = "#abb2bf",
+  --   },
+  --   -- Modify the highlight groups
+  --   highlights = function(highlights)
+  --     local C = require "default_theme.colors"
+  --
+  --     highlights.Normal = { fg = C.fg, bg = C.bg }
+  --     return highlights
+  --   end,
+  --   plugins = { -- enable or disable extra plugin highlighting
+  --     aerial = true,
+  --     beacon = false,
+  --     bufferline = true,
+  --     dashboard = true,
+  --     highlighturl = true,
+  --     hop = false,
+  --     indent_blankline = true,
+  --     lightspeed = false,
+  --     ["neo-tree"] = false,
+  --     notify = true,
+  --     ["nvim-tree"] = false,
+  --     ["nvim-web-devicons"] = true,
+  --     rainbow = true,
+  --     symbols_outline = false,
+  --     telescope = true,
+  --     vimwiki = false,
+  --     ["which-key"] = true,
+  --   },
+  -- },
+  --
+  -- -- Disable AstroNvim ui features
+  -- ui = {
+  --   nui_input = true,
+  --   telescope_select = true,
+  -- },
+
+  --
+  -- Configure plugins
+  plugins = {
+    -- Add plugins, the packer syntax without the "use"
+    init = {
+      -- You can disable default plugins as follows:
+      -- ["goolord/alpha-nvim"] = { disable = true },
+
+      -- You can also add new plugins here as well:
+      -- { "andweeb/presence.nvim" },
+      -- {
+      --   "ray-x/lsp_signature.nvim",
+      --   event = "BufRead",
+      --   config = function()
+      --     require("lsp_signature").setup()
+      --   end,
+      -- },
+      ["nvim-neo-tree/neo-tree.nvim"] = { disable = true },
+      ["folke/which-key.nvim"] = { disable = false },
+ 	    -- {'tzachar/cmp-tabnine', run='./install.sh', requires = 'hrsh7th/nvim-cmp'},
+      {'TovarishFin/vim-solidity'},
+      {'goerz/jupytext.vim'},
+      {'alvan/vim-closetag'},
+      -- {'github/copilot.vim'},
+      -- {'hrsh7th/cmp-copilot'},
+      {'jceb/vim-orgmode'},
+      {'itchyny/calendar.vim'},
+      {'jceb/blinds.nvim'},
+      {'untitled-ai/jupyter_ascending.vim'},
+      { 'dccsillag/magma-nvim', run = ':UpdateRemotePlugins' },
+      -- {
+      --   "jackMort/ChatGPT.nvim",
+      --     config = function()
+      --       require("chatgpt").setup({
+      --         keymaps = {
+      --           submit = "<C-s>"
+      --         }
+      --       })
+      --     end,
+      --     requires = {
+      --       "MunifTanjim/nui.nvim",
+      --       "nvim-lua/plenary.nvim",
+      --       "nvim-telescope/telescope.nvim"
+      --     }
+      -- },
+      -- {
+      --  'pwntester/octo.nvim',
+      --  requires = {
+      --     'nvim-lua/plenary.nvim',
+      --     'nvim-telescope/telescope.nvim',
+      --     'kyazdani42/nvim-web-devicons',
+      --   },
+      --   config = function ()
+      --     require"octo".setup()
+      --   end
+      -- },
+      {'tpope/vim-fugitive'},
+      -- {
+      --   -- https://github.com/svermeulen/vim-subversive
+      --   "svermeulen/vim-subversive",
+      --   opt = true,
+      --   keys = {
+      --       { "n", "<Space>pr" },
+      --       { "n", "<Space>pR" },
+      --       { "n", "<Space>prr" },
+      --       { "n", "<Space>prs" },
+      --       { "x", "<Space>prs" },
+      --       { "n", "<Space>prss" },
+      --   },
+      --   config = function()
+      --       vim.api.nvim_set_keymap("n", "<Space>pR", "<plug>(SubversiveSubstituteToEndOfLine)", {})
+      --       vim.api.nvim_set_keymap("n", "<Space>pr", "<plug>(SubversiveSubstitute)", {})
+      --       vim.api.nvim_set_keymap("n", "<Space>prr", "<plug>(SubversiveSubstituteLine)", {})
+      --       vim.api.nvim_set_keymap("n", "<Space>prs", "<plug>(SubversiveSubstituteRange)", {})
+      --       vim.api.nvim_set_keymap("x", "<Space>prs", "<plug>(SubversiveSubstituteRange)", {})
+      --       vim.api.nvim_set_keymap("n", "<Space>prss", "<plug>(SubversiveSubstituteWordRange)", {})
+      --   end,
+      -- },
+    {
+        -- https://github.com/tpope/vim-surround
+        "tpope/vim-surround",
+        opt = true,
+        keys = {
+            { "n", "ys" },
+            { "n", "yss" },
+            { "n", "ds" },
+            { "n", "cs" },
+            { "v", "S" },
+        },
+        config = function()
+            vim.g.surround_no_insert_mappings = 1
+        end,
+    },
+    {
+        -- https://github.com/mjbrownie/swapit
+        "mjbrownie/swapit",
+        requires = {
+            {
+                -- https://github.com/tpope/vim-speeddating
+                "tpope/vim-speeddating",
+                as = "speeddating",
+                setup = function()
+                    local opts = { noremap = true, silent = true }
+                    vim.g.speeddating_no_mappings = 1
+                    vim.api.nvim_set_keymap("n", "<Plug>SpeedDatingFallbackUp", "<C-a>", opts)
+                    vim.api.nvim_set_keymap("n", "<Plug>SpeedDatingFallbackDown", "<C-x>", opts)
+                end,
+            },
+        },
+        opt = true,
+        keys = {
+            { "n", "<Plug>SwapItFallbackIncrement" },
+            { "n", "<Plug>SwapItFallbackDecrement" },
+            { "n", "<C-a>" },
+            { "n", "<C-x>" },
+            { "n", "<C-t>" },
+        },
+        fn = { "SwapWord" },
+        config = function()
+            local opts = { silent = true }
+            vim.api.nvim_set_keymap(
+                "n",
+                "<Plug>SwapItFallbackIncrement",
+                ":<C-u>let sc=v:count1<Bar>call speeddating#increment(sc)<Bar>unlet sc<CR>",
+                opts
+            )
+            vim.api.nvim_set_keymap(
+                "n",
+                "<Plug>SwapItFallbackDecrement",
+                ":<C-u>let sc=v:count1<Bar>call speeddating#increment(-sc)<Bar>unlet sc<CR>",
+                opts
+            )
+            vim.api.nvim_set_keymap(
+                "n",
+                "<C-a>",
+                ':<C-u>let swap_count = v:count<Bar>call SwapWord(expand("<cword>"), swap_count, "forward", "no")<Bar>silent! call repeat#set("\\<Plug>SwapIncrement", swap_count)<Bar>unlet swap_count<CR>',
+                opts
+            )
+            vim.api.nvim_set_keymap(
+                "n",
+                "<C-x>",
+                ':<C-u>let swap_count = v:count<Bar>call SwapWord(expand("<cword>"), swap_count, "backward","no")<Bar>silent! call repeat#set("\\<Plug>SwapDecrement", swap_count)<Bar>unlet swap_count<CR>',
+                opts
+            )
+        end,
+    },
+    -- {
+    --     -- Give this a try:
+    --     -- use {"TimUntersberger/neogit"}
+    --     -- https://github.com/tpope/vim-fugitive
+    --     "tpope/vim-fugitive",
+    --     opt = true,
+    --     cmd = {
+    --         "Git",
+    --         "GBrowse",
+    --         "Gdiffsplit",
+    --         "Gstatus",
+    --         "Gwrite",
+    --         "Gblame",
+    --         "0Gclog",
+    --         "Gclog",
+    --         "Gmove",
+    --         "Gedit",
+    --         "Gremove",
+    --     },
+    --     ft = { "fugitive" },
+    --     config = function()
+    --         vim.cmd("autocmd BufReadPost fugitive://* set bufhidden=delete")
+    --     end,
+    -- },
+  {
+        -- https://github.com/justinmk/vim-dirvish
+        "justinmk/vim-dirvish",
+        opt = true,
+        cmd = { "Dirvish" },
+        keys = { { "n", "<Plug>(dirvish_up)" } },
+        setup = function()
+            vim.g.dirvish_mode = [[ :sort ,^.*[\/], ]]
+
+            vim.g.netrw_browsex_viewer = "xdg-open-background"
+            local opts = { noremap = true, silent = true }
+            vim.api.nvim_set_keymap(
+                "n",
+                "<Plug>NetrwBrowseX",
+                ':call netrw#BrowseX(expand((exists("g:netrw_gx")? g:netrw_gx : "<cfile>")),netrw#CheckIfRemote())<CR>',
+                opts
+            )
+            vim.api.nvim_set_keymap("n", "gx", "<Plug>NetrwBrowseX", {})
+            vim.api.nvim_set_keymap("v", "<Plug>NetrwBrowseXVis", ":<c-u>call netrw#BrowseXVis()<CR>", opts)
+            vim.api.nvim_set_keymap("v", "gx", "<Plug>NetrwBrowseXVis", {})
+
+            vim.cmd("command! -nargs=? -complete=dir Explore Dirvish <args>")
+            vim.cmd("command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args>")
+            vim.cmd("command! -nargs=? -complete=dir Vexplore leftabove vsplit | silent Dirvish <args>")
+        end,
+        config = function()
+            vim.cmd([[
+                      augroup my_dirvish_events
+                          autocmd!
+                          " Map t to "open in new tab".
+                          autocmd FileType dirvish  nnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>|xnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>
+
+                           
+                          " Enable :Gstatus and friends.
+                          " autocmd FileType dirvish call fugitive#detect(@%)
+                          " Map `gh` to hide dot-prefixed files.
+                          " To "toggle" this, just press `R` to reload.
+                          autocmd FileType dirvish nnoremap <silent><buffer> gh :silent keeppatterns g@\v/\.[^\/]+/?$@d<cr>
+                          autocmd FileType dirvish nnoremap <buffer> <space>e :e %/
+                          autocmd FileType dirvish nnoremap <buffer> % :e %/
+
+                      augroup END
+                  ]])
+        end,
+    }
+
+    },
+    -- All other entries override the setup() call for default plugins
+    ["null-ls"] = function(config)
+      local null_ls = require "null-ls"
+      -- Check supported formatters and linters
+      -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/formatting
+      -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
+      config.sources = {
+        -- Set a formatter
+        null_ls.builtins.formatting.rufo,
+        -- Set a linter
+        null_ls.builtins.diagnostics.rubocop,
+      }
+      -- set up null-ls's on_attach function
+      config.on_attach = function(client)
+        -- NOTE: You can remove this on attach function to disable format on save
+        if client.resolved_capabilities.document_formatting then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            desc = "Auto format before save",
+            pattern = "<buffer>",
+            callback = vim.lsp.buf.formatting_sync,
+          })
+        end
+      end
+      return config -- return final config table
+    end,
+    treesitter = {
+      ensure_installed = { "lua" },
+    },
+    ["nvim-lsp-installer"] = {
+      ensure_installed = { "sumneko_lua" },
+    },
+    packer = {
+      compile_path = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua",
+    },
+  },
+
+  -- LuaSnip Options
+  luasnip = {
+    -- Add paths for including more VS Code style snippets in luasnip
+    vscode_snippet_paths = {},
+    -- Extend filetypes
+    filetype_extend = {
+      javascript = { "javascriptreact" },
+    },
+  },
+
+  -- Modify which-key registration
+  ["which-key"] = {
+    -- Add bindings
+    register_mappings = {
+      -- first key is the mode, n == normal mode
+      n = {
+        -- second key is the prefix, <leader> prefixes
+        ["<leader>"] = {
+          -- which-key registration table for normal mode, leader prefix
+          -- ["N"] = { "<cmd>tabnew<cr>", "New Buffer" },
+        },
+      },
+    },
+  },
+
+  -- CMP Source Priorities
+  -- modify here the priorities of default cmp sources
+  -- higher value == higher priority
+  -- The value can also be set to a boolean for disabling default sources:
+  -- false == disabled
+  -- true == 1000
+  cmp = {
+    source_priority = {
+      nvim_lsp = 1000,
+      luasnip = 750,
+      buffer = 500,
+      path = 250,
+    },
+  },
+
+  -- Extend LSP configuration
+  lsp = {
+    -- enable servers that you already have installed without lsp-installer
+    servers = {
+      -- "pyright"
+    },
+    -- add to the server on_attach function
+    -- on_attach = function(client, bufnr)
+    -- end,
+
+    -- override the lsp installer server-registration function
+    -- server_registration = function(server, opts)
+    --   require("lspconfig")[server].setup(opts)
+    -- end,
+
+    -- Add overrides for LSP server settings, the keys are the name of the server
+    ["server-settings"] = {
+      -- example for addings schemas to yamlls
+      -- yamlls = {
+      --   settings = {
+      --     yaml = {
+      --       schemas = {
+      --         ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*.{yml,yaml}",
+      --         ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+      --         ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+      --       },
+      --     },
+      --   },
+      -- },
+    },
+  },
+
+  -- Diagnostics configuration (for vim.diagnostics.config({}))
+  diagnostics = {
+    virtual_text = true,
+    update_in_insert = false,
+    underline = true,
+  },
+
+  -- This function is run last
+  -- good place to configure mappings and vim options
+  polish = function()
+    -- Set key bindings
+    vim.keymap.set("n", "<C-s>", ":w!<CR>")
+
+    -- Set autocommands
+    vim.api.nvim_create_augroup("packer_conf", { clear = true })
+    vim.api.nvim_create_autocmd("BufWritePost", {
+      desc = "Sync packer after modifying plugins.lua",
+      group = "packer_conf",
+      pattern = "plugins.lua",
+      command = "source <afile> | PackerSync",
+    })
+vim.cmd [[
+  augroup packer_conf
+    autocmd!
+    autocmd bufwritepost plugins.lua source <afile> | PackerSync
+  augroup end
+  let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.tsx'
+  let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.tsx'
+  let g:closetag_filetypes = 'html,xhtml,phtml'
+  let g:closetag_xhtml_filetypes = 'xhtml,jsx,tsx'
+  let g:closetag_emptyTags_caseSensitive = 1
+  let g:closetag_regions = {
+      \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+      \ 'javascript.jsx': 'jsxRegion',
+      \ 'typescriptreact': 'jsxRegion,tsxRegion',
+      \ 'javascriptreact': 'jsxRegion',
+      \ }
+  let g:closetag_shortcut = '>'
+  let g:closetag_close_shortcut = '<leader>>'
+]]
+
+vim.cmd [[
+  " let g:blinds_guibg = "#30333d"
+  let g:blinds_guibg = "#222633"
+  let g:python3_host_prog = "/usr/bin/python3"
+  set mouse=a
+]]
+
+vim.cmd("let g:calendar_google_calendar = 1")
+vim.cmd("let g:calendar_google_task = 1")
+vim.cmd("let g:calendar_google_api_key = 'AIzaSyDtesP3w1g8WjV7tvRNnP-QelSbav_YpLA'")
+vim.cmd("let g:calendar_google_client_id = '546719358928-fhn4c98a6dra2tohtshvn79pv3v8or3h.apps.googleusercontent.com'")
+vim.cmd("let g:calendar_google_client_secret = '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'")
+
+-- ********* Transparent background
+vim.cmd("hi Normal guibg=NONE ctermbg=NONE")
+vim.cmd("hi CursorColumn cterm=NONE ctermbg=NONE ctermfg=NONE")
+vim.cmd("hi CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE")
+vim.cmd("hi CursorLineNr cterm=NONE ctermbg=NONE ctermbg=NONE")
+vim.cmd("hi clear LineNr")
+vim.cmd("hi clear SignColumn")
+vim.cmd("hi clear StatusLine")
+--
+--
+
+
+vim.api.nvim_set_hl(0, 'WinSeparator', { fg = 'red', bold = true })
+vim.opt.fillchars = {
+  horiz     = '━',
+  horizup   = '┻',
+  horizdown = '┳',
+  vert      = '┃',
+  vertleft  = '┫',
+  vertright = '┣',
+  verthoriz = '╋',
+}
+
+
+    -- Set up custom filetypes
+    vim.filetype.add {
+      extension = {
+        foo = "fooscript",
+      },
+      filename = {
+        ["Foofile"] = "fooscript",
+      },
+      pattern = {
+        ["~/%.config/foo/.*"] = "fooscript",
+      },
+    }
+  end,
+}
+
+return config
